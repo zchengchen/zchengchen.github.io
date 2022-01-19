@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Z. Chen</title>
-    <link>https://zchengchen.github.io/posts/</link>
+    <link>/posts/</link>
     <description>Recent content in Posts on Z. Chen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Zhicheng Chen.  All rights reserved.</copyright>
-    <lastBuildDate>Wed, 19 Jan 2022 17:59:58 +0800</lastBuildDate><atom:link href="https://zchengchen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jan 2022 17:59:58 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>First Post</title>
-      <link>https://zchengchen.github.io/posts/first-post/</link>
+      <link>/posts/first-post/</link>
       <pubDate>Wed, 19 Jan 2022 17:59:58 +0800</pubDate>
       
-      <guid>https://zchengchen.github.io/posts/first-post/</guid>
+      <guid>/posts/first-post/</guid>
       <description>Hello!</description>
     </item>
     
