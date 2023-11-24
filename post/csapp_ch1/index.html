@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>A Basic Tour about Computer Systems - Z. Chen</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta itemprop="name" content="A Basic Tour about Computer Systems">
+<meta itemprop="description" content="Character Encoding ASCII ASCII, abbreviated from American Standard Code for Information Interchange, is a character encoding standard, which is mainly focused on English characters. This encoding method cannot represent some special characters, such as the Chinese character &ldquo;乐&rdquo;, and the thinking face emotion &ldquo;🤔&rdquo;.
+At present, ASCII includes 128 characters, which are encoded from 0x00 to 0x7F. If a C source file does not contain any special characters mentioned above, the content is as same as the ASCII, because many subsequent character encoding methods are compatible with ASCII."><meta itemprop="datePublished" content="2022-12-27T12:03:50+08:00" />
+<meta itemprop="dateModified" content="2022-12-27T12:03:50+08:00" />
+<meta itemprop="wordCount" content="2836">
+<meta itemprop="keywords" content="CSAPP," /><meta property="og:title" content="A Basic Tour about Computer Systems" />
+<meta property="og:description" content="Character Encoding ASCII ASCII, abbreviated from American Standard Code for Information Interchange, is a character encoding standard, which is mainly focused on English characters. This encoding method cannot represent some special characters, such as the Chinese character &ldquo;乐&rdquo;, and the thinking face emotion &ldquo;🤔&rdquo;.
+At present, ASCII includes 128 characters, which are encoded from 0x00 to 0x7F. If a C source file does not contain any special characters mentioned above, the content is as same as the ASCII, because many subsequent character encoding methods are compatible with ASCII." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/csapp_ch1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-27T12:03:50+08:00" />
+<meta property="article:modified_time" content="2022-12-27T12:03:50+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A Basic Tour about Computer Systems"/>
+<meta name="twitter:description" content="Character Encoding ASCII ASCII, abbreviated from American Standard Code for Information Interchange, is a character encoding standard, which is mainly focused on English characters. This encoding method cannot represent some special characters, such as the Chinese character &ldquo;乐&rdquo;, and the thinking face emotion &ldquo;🤔&rdquo;.
+At present, ASCII includes 128 characters, which are encoded from 0x00 to 0x7F. If a C source file does not contain any special characters mentioned above, the content is as same as the ASCII, because many subsequent character encoding methods are compatible with ASCII."/>
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display:700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" media="screen" href="../../css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="../../css/main.css" />
+
+	<link id="dark-scheme" rel="stylesheet" type="text/css" href="../../css/dark.css" />
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="../../js/main.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+	<div class="avatar">
+		<a href="../../">
+			<img src="https://avatars.githubusercontent.com/u/84196090?s=400&amp;u=a56a4c7933f058d5a79b0ffa6c14569ca43b4f81&amp;v=4" alt="Z. Chen" />
+		</a>
+	</div>
+	
+	<h1 class="site-title"><a href="../../">Z. Chen</a></h1>
+	<div class="site-description"><p>Some birds aren&rsquo;t meant to be caged.</p><nav class="nav social">
+			<ul class="flat"><li><a href="https://github.com/zchengchen" title="Github"><i data-feather="github"></i></a></li><li><a href="../../index.xml" title="RSS"><i data-feather="rss"></i></a></li><li><a href="#" class="scheme-toggle" id="scheme-toggle"></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="../../post">Posts</a>
+			</li>
+			
+			<li>
+				<a href="../../about">About me</a>
+			</li>
+			
+			<li>
+				<a href="../../tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+<script type="text/javascript" async
+    src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\[\[', '\]\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                TeX: {
+                    equationNumbers: { autoNumber: "AMS" },
+                    extensions: ["AMSmath.js", "AMSsymbols.js"]
+                }
+            }
+        });
+
+        MathJax.Hub.Queue(function () {
+            
+            
+            
+            var all = MathJax.Hub.getAllJax(), i;
+            for (i = 0; i < all.length; i += 1) {
+                all[i].SourceElement().parentNode.className += ' has-jax';
+            }
+        });
+    </script>
+
+<style>
+    code.has-jax {
+        font: inherit;
+        font-size: 100%;
+        background: inherit;
+        border: inherit;
+        color: #515151;
+    }
+</style>
+
+		<div class="post">
+			<div class="post-header">
+				
+				<div class="meta">
+					<div class="date">
+						<span class="day">27</span>
+						<span class="rest">Dec 2022</span>
+					</div>
+				</div>
+				
+				<div class="matter">
+					<h1 class="title">A Basic Tour about Computer Systems</h1>
+				</div>
+			</div>
+
+			<div class="markdown">
+				<aside>
+					<nav id="TableOfContents">
+  <ul>
+    <li><a href="#character-encoding">Character Encoding</a>
+      <ul>
+        <li><a href="#ascii">ASCII</a></li>
+        <li><a href="#unicode">Unicode</a></li>
+        <li><a href="#gbk-big5-etc">GBK, Big5, etc.</a></li>
+      </ul>
+    </li>
+    <li><a href="#compilation-system">Compilation System</a>
+      <ul>
+        <li><a href="#preprocess">Preprocess</a></li>
+        <li><a href="#compiling">Compiling</a></li>
+        <li><a href="#assembling">Assembling</a></li>
+        <li><a href="#linking">Linking</a></li>
+      </ul>
+    </li>
+    <li><a href="#process-and-thread">Process and Thread</a>
+      <ul>
+        <li><a href="#concepts-users-view">Concepts (users' view)</a></li>
+        <li><a href="#implementation-in-linux-kernals-view">Implementation in Linux (kernal&rsquo;s view)</a></li>
+      </ul>
+    </li>
+    <li><a href="#concurrency-and-parallelism">Concurrency and Parallelism</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+				</aside>
+				<h2 id="character-encoding">Character Encoding</h2>
+<h3 id="ascii">ASCII</h3>
+<p>ASCII, abbreviated from American Standard Code for Information Interchange, is a character encoding standard, which is mainly focused on English characters. This encoding method cannot represent some special characters, such as the Chinese character &ldquo;乐&rdquo;, and the thinking face emotion &ldquo;🤔&rdquo;.</p>
+<p>At present, ASCII includes 128 characters, which are encoded from 0x00 to 0x7F.  If a C source file does not contain any special characters mentioned above, the content is as same as the ASCII, because many subsequent character encoding methods are compatible with ASCII. Take <code>hello.c</code> for example.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">#include</span> <span style="color:#00f">&lt;stdio.h&gt;</span><span style="color:#00f">
+</span><span style="color:#00f"></span>
+<span style="color:#2b91af">int</span> main() {
+  printf(<span style="color:#a31515">&#34;Hello, world!&#34;</span>);
+  <span style="color:#00f">return</span> 0;
+}
+</code></pre></div><p>In Linux, we can use the command <code>hexdump</code> to check the content of a file.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;hexdump -C hello.c
+00000000  23 69 6e 63 6c 75 64 65  20 3c 73 74 64 69 6f 2e  |#include &lt;stdio.|
+00000010  68 3e 0a 0a 69 6e 74 20  6d 61 69 6e 28 29 20 7b  |h&gt;..int main() {|
+00000020  0a 20 20 70 72 69 6e 74  66 28 22 48 65 6c 6c 6f  |.  printf(&#34;Hello|
+00000030  2c 20 77 6f 72 6c 64 21  22 29 3b 0a 20 20 72 65  |, world!&#34;);.  re|
+00000040  74 75 72 6e 20 30 3b 0a  7d 0a                    |turn 0;.}.|
+0000004a
+</code></pre></div><h3 id="unicode">Unicode</h3>
+<p>Actually, Linux normally do not use ASCII as its character encoding method, and you can use the command locale to check this.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;locale
+LANG=en_US.UTF-8
+LANGUAGE=
+LC_CTYPE=&#34;en_US.UTF-8&#34;
+LC_NUMERIC=zh_CN.UTF-8
+LC_TIME=zh_CN.UTF-8
+LC_COLLATE=&#34;en_US.UTF-8&#34;
+LC_MONETARY=zh_CN.UTF-8
+LC_MESSAGES=&#34;en_US.UTF-8&#34;
+LC_PAPER=zh_CN.UTF-8
+LC_NAME=zh_CN.UTF-8
+LC_ADDRESS=zh_CN.UTF-8
+LC_TELEPHONE=zh_CN.UTF-8
+LC_MEASUREMENT=zh_CN.UTF-8
+LC_IDENTIFICATION=zh_CN.UTF-8
+LC_ALL=
+</code></pre></div><p>We can find that the character encoding method of my system is UTF-8. But before we enter into UTF-8, let us go through what Unicode is first. Unicode, formally The Unicode Standard, is a standard that includes almost all characters around the world, such as Chinese, Japanese and Arabic characters. The range of this standard is from 0x00 to 0x10FFFF and covers more than one million different characters. Obviously, this representation needs one byte, two bytes or three bytes to store a certain character. If all characters are represented by three bytes, then for those characters that can be represented by one byte, the other two bytes are meaningless, which is a huge waste for storage. For example, all English characters can be represented by one byte like ASCII, we do not hope to use three bytes to store them. To satisfy various requirements, therefore, there are various storage methods for Unicode, the common ones are UTF-8, UTF-16, as well as UTF-32, and they use different binary formats to represent Unicode characters respectively.</p>
+<h4 id="utf-8">UTF-8</h4>
+<p>UTF-8 is a variable-width character encoding standard, defined as the encoding of a certain character into one to four bytes.</p>
+<p>The encoding rule of UTF-8:</p>
+<ol>
+<li>For one byte encoding, the <em>most significant bit(MSB)</em> is always zero, and resting seven bits cover whole characters of ASCII.</li>
+<li>For encoding more than one byte, such as n bytes, the first n bits of n bytes is one and  the (n+1)<!-- raw HTML omitted -->th<!-- raw HTML omitted --> is zero. And for subsequent bytes, the first 2 bits are all set as one and zero, respectively.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Unicode range</th>
+<th>UTF-8 mapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x000000 - 0x00007F</td>
+<td>0b0####### (ASCII)</td>
+</tr>
+<tr>
+<td>0x000080 - 0x0007FF</td>
+<td>0b110##### 10######</td>
+</tr>
+<tr>
+<td>0x000800 - 0x00FFFF</td>
+<td>0b1110#### 10###### 10######</td>
+</tr>
+<tr>
+<td>0x010000 - 0x10FFFF</td>
+<td>0b11110### 10###### 10###### 10######</td>
+</tr>
+</tbody>
+</table>
+<p>Now let us try to convert a Unicode representation to the binary form. Take emoji &ldquo;🤔&rdquo; for example, and it is represented as U+1F914 in Unicode.</p>
+<p>$$1F914_{16} = (000\ 011111\ 100100\ 010100)_2$$</p>
+<p>Therefore, the result is $(\underline{11110}000\ \underline{10}011111\ \underline{10}100100\ \underline{10}010100)_2$. In the UTF-8 standard, &ldquo;🤔&rdquo; is stored by four bytes.</p>
+<p>If you store this emoji in a file named x and use the command <code>hexdump</code>, you can get:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;hexdump -C x
+00000000  f0 9f a4 94 0a                                    |.....|
+00000005
+</code></pre></div><p>$$F09FA494_{16} = (11110000\ 10011111\ 10100100\ 10010100)_2$$</p>
+<h4 id="utf-16">UTF-16</h4>
+<p>UTF-16 is also a variable-width character encoding standard, defined as the encoding of a certain character into two or four bytes.</p>
+<p>The encoding rule of UTF-16:</p>
+<ol>
+<li>
+<p>For characters with Unicode code less than 0x10000, two bytes are used to store each of them, and there is no need to add other bits.</p>
+</li>
+<li>
+<p>For characters with Unicode code between 0x10000 and 0x10FFFF, two bytes are used to store them, which are divided into two parts. There is an additional operation to subtract 0x10000 from the original Unicode value. For the first bytes, the first six bits are 110110, and for the fourth byte, the first six bits are 110111.</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Unicode range</th>
+<th>UTF-16 mapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0000 0000 - 0x0000 FFFF</td>
+<td>0b######## ########</td>
+</tr>
+<tr>
+<td>0x0001 0000 - 0x0010 FFFF</td>
+<td>0b110110## ######## 110111## ########</td>
+</tr>
+</tbody>
+</table>
+<p>For English character &lsquo;A&rsquo; (less than 0x10000), apparently its UTF-16 code is $(00000000\ 01000001)_2$, i.e. 0x0041.</p>
+<p>For emoji &ldquo;🤔&rdquo; ($1F914_{16} &gt; 10000_{16}$, more than 0x10000), $1F914_{16} - 10000_{16} = F914_{16}$. Its UTF-16 code is $(\underline{110110}00\ 00111110\ \underline{110111}01\ 00010100)_2$, i.e. 0xD83EDD14.</p>
+<h4 id="utf-32">UTF-32</h4>
+<p>UTF-32 is a fixed-length encoding that always occupies four bytes, enough to accommodate all Unicode characters, so it can be stored directly in Unicode codes without any encoding conversion. Although it wastes storage, it improves efficiency.</p>
+<p>For &lsquo;A&rsquo;, it will be stored as 0x00000041, and for &lsquo;🤔&rsquo;, it will be stored as 0x0001F914.</p>
+<h3 id="gbk-big5-etc">GBK, Big5, etc.</h3>
+<p>They are historical legacies. Before Unicode, there were different encodings for encoding characters in computers all over the world, especially in East Asia, such as GB2312 in mainland China, which was later expanded to GBK, Big5 in Taiwan, and SHIFT-JIS in Japan. It is compatible with ASCII, and it maintains the code of the original string program (all char arrays), and it is self-synchronizing, so it quickly became popular and became the choice of string encoding for those who want to be cross-platform and support multiple languages.</p>
+<h2 id="compilation-system">Compilation System</h2>
+<p>We will use <code>main.c</code> as an example to explore the process of compilation.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">#define a 1
+</span><span style="color:#00f">#define b 3
+</span><span style="color:#00f"></span>
+<span style="color:#2b91af">int</span> main(<span style="color:#2b91af">void</span>) {
+  <span style="color:#2b91af">int</span> c = a + b;
+  <span style="color:#00f">return</span> c;
+}
+</code></pre></div><h3 id="preprocess">Preprocess</h3>
+<p>Preprocess mainly modifies the original program according to directives that begin with &ldquo;#&rdquo;, such as <code>#define</code> and <code>#include&lt;stdio.h&gt;</code>. We use the command <code>cpp</code> to preprocess this file and get this:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f"># 1 &#34;main.c&#34;
+</span><span style="color:#00f"># 1 &#34;&lt;built-in&gt;&#34;
+</span><span style="color:#00f"># 1 &#34;&lt;command-line&gt;&#34;
+</span><span style="color:#00f"># 31 &#34;&lt;command-line&gt;&#34;
+</span><span style="color:#00f"># 1 &#34;/usr/include</span><span style="color:#00f">/stdc-predef.h&#34; 1 3 4</span><span style="color:#00f">
+</span><span style="color:#00f"># 32 &#34;&lt;command-line&gt;&#34; 2
+</span><span style="color:#00f"># 1 &#34;main.c&#34;
+</span><span style="color:#00f"></span>
+
+
+<span style="color:#2b91af">int</span> main(<span style="color:#2b91af">void</span>) {
+  <span style="color:#2b91af">int</span> c = 1 + 3;
+  <span style="color:#00f">return</span> c;
+}
+</code></pre></div><p>There are some new output at the top of the file, which is much like a &ldquo;debugging&rdquo; or &ldquo;logging&rdquo;, (or even &ldquo;storytelling&rdquo;) session of what the preprocessor is doing and how. It will basically tell you through on how it is expanding the macros found. Source file name and line number information is conveyed by lines of the form:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f"># linenum filename [flags]
+</span><span style="color:#00f"></span>...(Another linemarker)
+</code></pre></div><p>They are called linemarkers, inserted as needed into the output (but never within a string or character constant). This means that the following line (<code>...</code>, a certain linemarker) originated at line number <code>linenum</code> in file <code>filename</code>. The optional <code>flags</code> are:</p>
+<table>
+<thead>
+<tr>
+<th>Flags</th>
+<th>Meanings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>This indicates the start of a new file.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>This indicates returning to a file (after having included another file).</td>
+</tr>
+<tr>
+<td>3</td>
+<td>This indicates that the following text comes from a system header file, so certain warnings should be suppressed.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>This indicates that the following text should be treated as being wrapped in an implicit extern &ldquo;C&rdquo; block.</td>
+</tr>
+</tbody>
+</table>
+<p><code>&lt;built-in&gt;</code> and <code>&lt;command-line&gt; </code>  are not real files. They are non-file sources of preprocessor tokens that need to be represented somehow in the output format, so they are treated as if they were files. Call them pseudo-files.</p>
+<ul>
+<li><code>&lt;built-in&gt;</code> is the pseudo-file that contains the compiler&rsquo;s built-in macro definitions, like <code>__LINE__</code>, <code>__FILE__</code> and <code>__DATE__</code>.</li>
+<li><code>&lt;command-line&gt;</code> is from the preprocessor (usually GCC) command line, considered as a source of macro definitions (and possibly un-definitions), such as the command <code>gcc ... -DFOO=1 -UBAR ...</code> and so on.</li>
+</ul>
+<p>All in all, the meaning of these directive are as follow:</p>
+<table>
+<thead>
+<tr>
+<th>Directives</th>
+<th>Meanings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td># 1 &ldquo;main.c&rdquo;</td>
+<td>The following line is at line 1 of <code>main.c</code>, with no other flags. So, it means to start to read line 1 of <code>main.c</code>.</td>
+</tr>
+<tr>
+<td># 1 &ldquo;&lt;built-in&gt;&rdquo;</td>
+<td>Read a built-in C pre-processor directive. This line, therefore, sets a standard predefined macro, like _LINUX_ or __cplusplus.</td>
+</tr>
+<tr>
+<td># 1 &ldquo;&lt;command-line&gt;&rdquo;</td>
+<td>Read a command-line option, and one of those is set by the <code>-D</code> flag, like <code>-DTEST=0</code>, or even command-line undefinitions, like <code>-UTEST</code>.</td>
+</tr>
+<tr>
+<td># 31 &ldquo;&lt;command-line&gt;&rdquo;</td>
+<td>At line 31 in the fictious file, read another macro coming from the command line. (Note these are set in the order they are found)</td>
+</tr>
+<tr>
+<td># 1 &ldquo;/usr/include/stdc-predef.h&rdquo; 1 3 4</td>
+<td>Read the pre-defined macros file, located at <code>/usr/include/stdc-predef.h</code> assuring that this header will be included like a system file header and that the symbols it contains are treated as C symbols.</td>
+</tr>
+<tr>
+<td># 32 &ldquo;&lt;command-line&gt;&rdquo; 2</td>
+<td>Resume and finish reading the <code>&lt;command-line&gt;</code> pseudo-file.</td>
+</tr>
+<tr>
+<td># 1 &ldquo;main.c&rdquo;</td>
+<td>Resume reading <code>main.c</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Actually, these output directives are not dispensable for compiling. Their purposes are:</p>
+<ol>
+<li>If the compiler encounters an error, it uses the most recent line number directive to determine what file and line to reference in the error message. (The <code>#line</code> directive can even be used in generated code to allow error messages to point directly to the original source file, rather than to an intermediate C source file.)</li>
+<li>If debugging information (<code>-g</code>) is turned on, line number data is included in debug sections of the generated object file.</li>
+</ol>
+<p>Neither of these purposes is critical, so you would be free to delete these directives before compiling. The really &ldquo;useful&rdquo; part is as    follow:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#2b91af">int</span> main(<span style="color:#2b91af">void</span>) {
+  <span style="color:#2b91af">int</span> c = 1 + 3;
+  <span style="color:#00f">return</span> c;
+}
+</code></pre></div><h3 id="compiling">Compiling</h3>
+<p>This step translate C language into assembly. We can use the command <code>gcc -S main.i -o main.s</code> to get compiling result:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	.file	&#34;main.c&#34;
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	$4, -4(%rbp)
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	main, .-main
+	.ident	&#34;GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0&#34;
+	.section	.note.GNU-stack,&#34;&#34;,@progbits
+	.section	.note.gnu.property,&#34;a&#34;
+	.align 8
+	.long	 1f - 0f
+	.long	 4f - 1f
+	.long	 5
+0:
+	.string	 &#34;GNU&#34;
+1:
+	.align 8
+	.long	 0xc0000002
+	.long	 3f - 2f
+2:
+	.long	 0x3
+3:
+	.align 8
+4:
+</code></pre></div><h3 id="assembling">Assembling</h3>
+<p>We can use the command <code>gcc -c main.s -o main.o</code> to get a relocatable object program, the content of which is gibberish.</p>
+<p>The part of the file is as follow:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;hexdump -C main.o
+00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+00000010  01 00 3e 00 01 00 00 00  00 00 00 00 00 00 00 00  |..&gt;.............|
+00000020  00 00 00 00 00 00 00 00  58 02 00 00 00 00 00 00  |........X.......|
+00000030  00 00 00 00 40 00 00 00  00 00 40 00 0c 00 0b 00  |....@.....@.....|
+00000040  f3 0f 1e fa 55 48 89 e5  c7 45 fc 04 00 00 00 8b  |....UH...E......|
+00000050  45 fc 5d c3 00 47 43 43  3a 20 28 55 62 75 6e 74  |E.]..GCC: (Ubunt|
+00000060  75 20 39 2e 34 2e 30 2d  31 75 62 75 6e 74 75 31  |u 9.4.0-1ubuntu1|
+00000070  7e 32 30 2e 30 34 2e 31  29 20 39 2e 34 2e 30 00  |~20.04.1) 9.4.0.|
+00000080  04 00 00 00 10 00 00 00  05 00 00 00 47 4e 55 00  |............GNU.|
+00000090  02 00 00 c0 04 00 00 00  03 00 00 00 00 00 00 00  |................|
+...(Omit many bytes)
+</code></pre></div><p>In this way, <code>main.s</code> will be translated into machine language instructions, and packaged in a new form. Actually, this file is an <em>Executable and Linkable Format(ELF)</em>, and we can use the command <code>readelf -h main.o</code> to read its head.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;readelf -h main.o
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          600 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           64 (bytes)
+  Number of section headers:         12
+  Section header string table index: 11
+</code></pre></div><h3 id="linking">Linking</h3>
+<p>We can use <code>gcc main.c -o main</code> to merge other precompiled object file, like <code>printf.o</code> and <code>scanf.o</code>, and get a final executable file. The command <code>size</code> can reflect differences.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;size main.o
+   text	   data	    bss	    dec	    hex	filename
+    108	      0	      0	    108	     6c	main.o
+$&gt;size main
+   text	   data	    bss	    dec	    hex	filename
+   1418	    544	      8	   1970	    7b2	main
+</code></pre></div><ul>
+<li>Text segment: the size of the codes.</li>
+<li>Data segment: the size of the data segment containing static variables and global variables that have been initialized.</li>
+<li>Bss segment: <em>Block Started by Symbol (BSS)</em> holds the size of bytes of uninitialized global variables in the program, bbs segment belongs to static memory allocation.</li>
+</ul>
+<p>And we also can use <code>ldd</code> to prints the shared objects (shared libraries) required by a program.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$&gt;ldd main
+	linux-vdso.so.1 (0x00007ffededa7000)
+	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007fc5988b9000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007fc598ac6000)
+</code></pre></div><h2 id="process-and-thread">Process and Thread</h2>
+<h3 id="concepts-users-view">Concepts (users' view)</h3>
+<h4 id="process">Process</h4>
+<p>A process is an instance of a program in execution. It is an independent unit of the system for resource allocation and scheduling, focusing on system scheduling and individual units, i.e. a process is a section of a program that can run independently.</p>
+<h4 id="thread">Thread</h4>
+<p>A thread is a basic unit of CPU utilization; it comprise a thread id, a program counter, a register set and a stack. It shares with other threads belonging to the same process its code section, data section and other operating-system resources, such as open files and signals. Thread is also called <em>light-weight process (LWP)</em>. A traditional process has a single thread of control. If a process has multiple threads of control, it can perform more than one task at a time.</p>
+<h4 id="differences">Differences</h4>
+<p>In a process there may be many threads, and their differences are as follow:</p>
+<blockquote>
+<p>One way of looking at a process is that it is a way to group related resources together. A process has an address space containing program text and data, as well as other resources. These resource may include open files, child processes, pending alarms, signal handlers, accounting information, and more. By putting them together in the form of a process, they can be managed more easily. The other concept a process has is a thread of execution, usually shortened to just thread. The thread has a program counter that keeps track of which instruc­tion to execute next. It has registers, which hold its current working variables. It has a stack, which contains the execution history, with one frame for each proce­dure called but not yet returned from. Although a thread must execute in some process, the thread and its process are different concepts and can be treated sepa­rately. Processes are used to group resources together; threads are the entities scheduled for execution on the CPU.</p>
+<p>—— Book: <a href="https://www.amazon.com/dp/0136006639">Modern Operating Systems (3rd Edition)</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Per process items</th>
+<th>Per thread items</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address space</td>
+<td>Program counter</td>
+</tr>
+<tr>
+<td>Global variables</td>
+<td>Registers</td>
+</tr>
+<tr>
+<td>File descriptor (open files)</td>
+<td>Stack</td>
+</tr>
+<tr>
+<td>Child processes</td>
+<td>State</td>
+</tr>
+<tr>
+<td>Pending alarms</td>
+<td></td>
+</tr>
+<tr>
+<td>Signals and signal handlers</td>
+<td></td>
+</tr>
+<tr>
+<td>Accounting information</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="implementation-in-linux-kernals-view">Implementation in Linux (kernal&rsquo;s view)</h3>
+<p>The concepts mentioned above may be extremely confusing. Let us go through their implementation in Linux briefly.</p>
+<p>Actually, it is boring and meaningless to distinguish them. In Linux, everything is simply a runnable task. There is a C structure named <code>task_struct</code>, to describe the so-called process and thread. There are two key values in this structure —— <code>pid </code>(process ID) and <code>tgid</code> (task group ID), and we denote them as <em>struct_pid</em> and <em>struct_tgid</em> for ease of description, respectively. In Linux, each process has a distinct <em>struct_tgid</em> value and each thread has a distinct <em>struct_pid</em> value, so to some extent in Linux there is no special implementation for threads. Threads are treated as single-threaded processes (or namely tasks) while processes are treated as groups of single-threaded processes (or namely task groups). More briefly, threads are tasks and processes are groups of tasks. More interestingly, when you call the function <code>getpid()</code>, it returns <em>struct_tgid</em> rather than <em>struct_pid</em>. The following illustration may be helpful for understanding this:</p>
+<p><img src="../../images/csapp_ch1/process_and_thread.png" alt="process_and_thread"></p>
+<p>There was an email <a href="https://lkml.iu.edu/hypermail/linux/kernel/9608/0191.html">Re: proc fs and shared pids</a> from Linus that may be an excellent interpretation about differences between thread and process in Linux.</p>
+<h2 id="concurrency-and-parallelism">Concurrency and Parallelism</h2>
+<p>Generally speaking, concurrency is generally mentioned more in the context of programming while parallelism is mentioned more in the context of hardware. Concurrency is about dealing with lots of things at once. Parallelism is about doing lots of things at once. The following figure may help you understand it.</p>
+<p><img src="../../images/csapp_ch1/concurrency.png" alt="concurrency"></p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li>[1] <a href="https://www.readfog.com/a/1638084002220969984">Unicode、UTF-8、UTF-16，終於懂了</a></li>
+<li>[3] <a href="https://www.baeldung.com/linux/process-vs-thread">Linux Process vs. Thread | Baeldung on Linux</a></li>
+<li>[3] <a href="https://www.bilibili.com/video/BV1SE41157qw/?spm_id_from=333.880.my_history.page.click&amp;vd_source=de29298ee8e6e7c86147af75836b43ac">【Linux操作系统】番外篇 5 进程内存空间</a></li>
+<li>[4] <a href="https://lkml.iu.edu/hypermail/linux/kernel/9608/0191.html">Re: proc fs and shared pids</a></li>
+<li>[6] <a href="https://stackoverflow.com/questions/66465272/c-preprocessor-default-additions">C preprocessor default additions</a></li>
+<li>[7] <a href="https://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html">9 Preprocessor Output</a></li>
+<li>[8] <a href="https://stackoverflow.com/questions/53999485/are-line-markers-in-c-preprocessor-output-used-by-compiler">Are line-markers in C preprocessor output used by compiler?</a></li>
+<li>[9] <a href="https://stackoverflow.com/questions/35967463/what-resources-are-shared-and-what-are-created-during-new-process-and-new-thread">what resources are shared and what are created during new process and new thread creation in linux?</a></li>
+</ul>
+
+			</div>
+
+			<div class="tags">
+				
+				
+				<ul class="flat">
+					
+					<li><a href="../../tags/csapp">CSAPP</a></li>
+					
+				</ul>
+				
+				
+			</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        return;
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'ink-demo';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the </a></noscript></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div>2023  © Zhicheng Chen |  <a
+				href="https://github.com/knadh/hugo-ink">Ink</a> theme on <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script>feather.replace()</script>
+</body>
+
+</html>

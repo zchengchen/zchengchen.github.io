@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Z. Chen</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Z. Chen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Zhicheng Chen</copyright>
+    <lastBuildDate>Tue, 27 Dec 2022 12:03:50 +0800</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Basic Tour about Computer Systems</title>
+      <link>/post/csapp_ch1/</link>
+      <pubDate>Tue, 27 Dec 2022 12:03:50 +0800</pubDate>
+      
+      <guid>/post/csapp_ch1/</guid>
+      <description>Character Encoding ASCII ASCII, abbreviated from American Standard Code for Information Interchange, is a character encoding standard, which is mainly focused on English characters. This encoding method cannot represent some special characters, such as the Chinese character &amp;ldquo;乐&amp;rdquo;, and the thinking face emotion &amp;ldquo;🤔&amp;rdquo;.
+At present, ASCII includes 128 characters, which are encoded from 0x00 to 0x7F. If a C source file does not contain any special characters mentioned above, the content is as same as the ASCII, because many subsequent character encoding methods are compatible with ASCII.</description>
+    </item>
+    
+  </channel>
+</rss>
